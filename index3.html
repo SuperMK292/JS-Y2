@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="form-style-1" id="cnt">
+ 
+  <input id="fname" name="fName" type="text" class="field-long" />
+  
+  <input id="lname" name="lName" type="text" class="field-long" />
+
+  <input id="id" name="id" type="text" class="field-long" />
+  
+  <button id="btn-inp" onclick="SAlert()">בדוק</button>
+  <button id="btn-inp" onclick="showPrsnArr()">הצג</button>
+  <button id="btn-inp" onclick="insertNewPerson()">הכנס</button>
+  <button id="btn-inp" onclick="fixIt()">תקן</button>
+
+  <p id="demo"></p>
+  <p id="demo1"></p>
+</div>
+ 
+  <script>
+    var prsnArr = [], i, text1;
+    
+    var fname = document.getElementById("fname");
+    var lname = document.getElementById("lname");
+    var id = document.getElementById("id");
+    var demo = document.getElementById("demo");
+    var demo = document.getElementById("demo");
+    
+    function Person(fname, lname, id) {
+    this.fname = fname;
+    this.lname = lname;
+    this.id = id;
+    }
+    //var mendel = new Person("mendel", "bismuth", 50);
+    //document.getElementById("demo").innerHTML = mendel.lname;  
+    function insertNewPerson() {
+      if(inputfilled(fname.value,lname.value,id.value) && validateId(id)) 
+        {
+          var newPerson = new Person(fname.value,lname.value,id.value);
+          prsnArr.push(newPerson);
+          fname.value = "";
+          lname.value = "";
+          id.value = "";
+        }
+    }
+    function showPrsnArr() {
+      for (i = 0; i < prsnArr.length; i++) {
+      text1 += "<p id='demo2'>" + prsnArr[i].fname + "<br>" + prsnArr[i].lname + "<br>" + prsnArr[i].id + "</p>";
+      }
+      document.getElementById("demo1").innerHTML = text1;
+    }
+    function SAlert(strnp) {
+      var text = strnp, str = text, str2 = str, m = 10000000, sum = 0, arr = [], RID, lnt = text.length;
+      
+        for(var i = 0; i < 8; i++)
+        {
+          arr.push(Math.floor(text / m)*(i % 2 + 1));
+          text = text % m;
+          m /= 10;
+          if(arr[i] > 9)
+            sum += Math.floor(arr[i]/10) + arr[i] % 10;
+          else
+            sum += arr[i];
+        }
+      SuperCeil = (Math.floor(sum/10) + 1) * 10 - sum;
+        if(lnt == 9)
+          str = str.slice(0, 8);
+        RID = str + SuperCeil;
+      if(str2 == RID)
+        document.getElementById("demo").innerHTML = "the check digit is right";
+      return RID;
+    }
+    function inputfilled() {
+      alert(arguments.values);
+      for(var i = 0; i < arguments.length; i++)
+      {
+        if(arguments[i] == "")
+          {
+            demo.innerHTML = "please fill all the inputs";
+            return false;
+          }
+      }
+      return true;
+    }
+    
+    function validateId(id) {
+      var noNum = isNaN(id.value), lnt = id.value.length;
+       if(id.value == "")
+         {
+           demo.innerHTML = "please enter your ID";
+           return false;
+         }
+      else if(noNum == true)
+        {
+          demo.innerHTML = "your input must contain numbers only";
+          return false;
+        }
+      else if(lnt < 8 || lnt > 9)
+        {
+          demo.innerHTML = "your input is smaller from 8 or bigger from 9 digits";
+          return false;
+        }
+      else if(id. value != SAlert(id.value))
+      {
+        alert("nooooo");
+      }
+      return true;
+    }
+    function fixIt() {
+      id.value = SAlert(id.value);
+    }
+  </script>
+</body>
+</html>

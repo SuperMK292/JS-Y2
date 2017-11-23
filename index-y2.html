@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body dir="rtl">
+
+	<div class="container-fluid">
+		<br>
+		
+	<div class="col-sm-4" >
+		
+		<br><br>
+			<div  id=""><p onmouseover="alert('jhfojh')">                                    </p></div>
+			
+	</div>
+		
+		
+		<div class="col-sm-2" >
+		    <input type="text" name="" id="" placeholder="" /><br>
+			<input type="text" name="" id="" placeholder=""/> <br>
+			<input type="text" name="" id="" placeholder=""/> <br>
+		
+			
+		</div>
+		
+			<div class="col-sm-4" >
+				
+				<br><br>
+				<div  id="allPersons"></div>
+
+			
+			</div>
+		
+		
+		<div class="col-sm-2" >
+		
+			<b>פרטים אישיים:</b><br>
+		    <input type="text" name="fname" id="fname" placeholder="שם פרטי" /><br>
+			<input type="text" name="lname" id="lname" placeholder="שם משפחה"/> <br>
+			<input type="text" name="id" id="id" placeholder="ת.ז"/> <br><br>
+			
+			<b>פרטי מגורים:</b><br>
+			<input type="text" name="city" id="city" placeholder="עיר" /><br>
+			<input type="text" name="street" id="street" placeholder="רחוב"/> <br>
+			<input type="text" name="homeNumber" id="homeNumber" placeholder="מס בית"/>
+			
+			
+			<br><br>
+			<input type="button" value="הכנס" onclick="insertPerson()"/> 
+			<input type ="button" value="ספרת ביקורת" onclick="fixId()"/>
+			<input type="button" value="הצג" onclick="showPerson()"/>
+			
+			<br>
+			<input type="button" value="חפש" onclick="searchPerson()"/>
+			<input type="button" value="ערוך" onclick="editPerson()"/>
+			<input type="button" value="נקה" onclick="clearPerson()"/>
+			<input type="button" value="מחק" onclick="deletePerson()"/>
+			
+			
+		</div>
+		
+	
+	
+	
+	
+	</div>
+
+<script>
+String.prototype.isNumber = function(){return /^\d+$/.test(this);}
+
+	var personArr = [];
+	var fname = document.getElementById("fname");
+	var lname = document.getElementById("lname");
+	var id = document.getElementById("id");
+	var city = document.getElementById("city");
+	var street = document.getElementById("street");
+	var homeNumber = document.getElementById("homeNumber");
+		   
+		   var newAddress = new address("ירושלים","בני ברית","56");
+		   var newPerson = new person("ידידאל","לוק","000000018",newAddress);
+		   personArr.push(newPerson);
+		   
+		   var newAddress = new address("ירושלים","בני ברית","77");
+		   var newPerson = new person("אבי","טל","000000026",newAddress);
+		   personArr.push(newPerson);
+		   
+
+
+
+function cal(str){
+	var arr = str.split("");
+	var text=0;
+	var text2="";
+	var i;
+	for (i = 0; i < 8; i++) {
+	var temp = "";
+	temp+= arr[i]*((i%2)+1);
+	    
+	    if(temp.length>1){
+	    text += splitAndConcat(temp);
+	    }else{
+	    text += temp*1
+	    }
+	}
+	text2 += text;
+	var final ="";
+	if(text2.length>1)
+	{
+		final = ((text2.split("")[0]*1)+1)*10-text;
+		final = final==10?0:final;
+	}else{
+		final = 10-text;
+		}
+		
+		if(isNaN(final)){
+			return str;
+		}else{
+			return str.substring(0,8)+final;
+		}
+
+}
+
+function splitAndConcat(str){
+	var temp = str.split("");
+	var num1 = temp[0]*1;
+	var num2 = temp[1]*1;
+	return num1+num2;
+}
+
+function address(_city,_street,_homeNumber) {
+    this.city = _city;
+    this.street = _street;
+    this.homeNumber = _homeNumber;
+}
+
+function person(_fname,_lname,_id,_address){
+    this.fname = _fname;
+    this.lname = _lname;
+    this.id = _id;
+    this.address = _address;
+
+    this.print = function () {
+      fname.value = this.fname;
+      lname.value = this.lname;
+      city.value =  this.address.city;
+	  street.value = this.address.street;
+	  homeNumber.value = this.address.homeNumber;
+
+    }
+    
+    this.edit = function () {
+    	if(fname.value!=""&&lname.value!=""&&city.value!=""&&street.value!=""&&homeNumber.value!=""){
+	       this.fname =  fname.value;
+	       this.lname = lname.value;
+	       this.address.city = city.value;
+		   this.address.street = street.value;
+		   this.address.homeNumber = homeNumber.value;
+
+    	}
+    }
+}
+
+function showPerson(){
+var text ="";
+	for(var i=0; i<personArr.length;i++){
+		text+="<p><b>שם:</b> "+personArr[i].fname+"  "+personArr[i].lname+" <br><b>ת.ז:</b> "+personArr[i].id +
+		"<br> <b>כתובת:</b> "+
+		personArr[i].address.city+"  "+personArr[i].address.street+"  "+personArr[i].address.homeNumber +"</p> ";
+	}
+	if(text!=""){
+	document.getElementById("allPersons").innerHTML = text;
+	}
+}
+
+function searchPerson(){
+		for(var i=0;i<personArr.length;i++)
+		{
+			if(personArr[i].id==id.value)
+			{
+			 personArr[i].print();
+				break;
+			}
+		}
+}
+
+function editPerson(){
+		for(var i=0;i<personArr.length;i++)
+		{
+			if(personArr[i].id==id.value)
+			{
+			 personArr[i].edit();
+				break;
+			}
+		}
+		showPerson();
+}
+
+function deletePerson(){
+		for(var i=0;i<personArr.length;i++)
+		{
+			if(personArr[i].id==id.value)
+			{
+				 personArr.splice(i,1);
+				 id.value="";
+				 break;
+			}
+		}
+		showPerson();
+	
+}
+
+function clearPerson(){
+
+	fname.value="";
+	lname.value="";
+	id.value="";
+	city.value="";
+	street.value="";
+	homeNumber.value="";
+}
+
+function insertPerson(){
+	
+	if(hasValue(fname.value,lname.value,id.value,city.value,street.value,homeNumber.value)&&validateId(id)){
+		
+		   var newAddress = new address(city.value,street.value,homeNumber.value);
+		   var newPerson = new person(fname.value,lname.value,id.value,newAddress);
+		   personArr.push(newPerson);
+		   clearPerson();
+   }
+}
+
+function validateId(id)
+{
+	if(!id.value.isNumber())
+	{
+		alert("להזין בת.ז רק ספרות");
+		id.value = "";
+		return false;
+	}
+	if(id.value.length!=9)
+	{
+		alert("ת.ז צריכה להיות בעלת 9 ספרות");
+		return false;
+	}
+	if(cal(id.value)!=id.value)
+	{
+		alert("ת.ז אינה תקינה");
+		return false;
+	}
+	for(var i=0;i<personArr.length;i++){
+		if(personArr[i].id==id.value)
+		{
+			alert("ת.ז זו קיימת כבר");
+			return false;
+			
+		}
+	}
+	return true;
+}
+
+function hasValue(){
+var flag = true;
+	for(var i=0;i<arguments.length;i++){
+		if(arguments[i]==""){
+			flag = false;
+			alert("נא למלא את כל השדות");
+			break;
+		}
+	}
+	return flag;
+}
+
+function fixId(){
+	var id = document.getElementById("id");
+	id.value = cal(id.value);
+}
+</script>
+
+</body>
+</html>
