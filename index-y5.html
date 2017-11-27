@@ -1,0 +1,476 @@
+
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body dir="rtl">
+
+	<div class="container-fluid">
+		<br>
+		
+	<div class="col-sm-4" >
+		
+		<br><br>
+			<div  id="allAccounts"></div>
+			
+	</div>
+		
+		
+		<div class="col-sm-2" >
+		    <input type="text" name="accountPersonID" id="accountPersonID" placeholder="ת.ז"/><br>
+			<input type="text" name="accountBalance" id="accountBalance" placeholder="יתרה"/> <br>
+			<br>
+			
+			<input type="button" value="הכנס" onclick="insertAccount()"/>
+			<input type ="button" value="ספרת ביקורת" onclick="fixId(document.getElementById('accountPersonID'))"/>
+			<input type="button" value="הצג" onclick="showCount()"/>
+			<input type="button" value="הפקדה" onclick="hafkadaOrMeshiche(true)"/>
+			<input type="button" value="משיכה" onclick="hafkadaOrMeshiche(false)"/>
+			
+			<input type="button" data-toggle="modal" data-target="#myModal" value="העברה"/>
+
+			  <!-- Modal -->
+			  <div class="modal fade" id="myModal" role="dialog">
+			    <div class="modal-dialog">
+			    
+			      <!-- Modal content-->
+			      <div class="modal-content">
+			        <div class="modal-header">
+			          <button type="button" class="close" data-dismiss="modal">&times;</button>
+			          <h4 class="modal-title">העברה בין חשבונות</h4>
+			        </div>
+			        <div class="modal-body">
+			          <input type="text" name="chiuvID" id="chiuvID" placeholder="ת.ז לחיוב"/><br>
+			          <input type="text" name="zikuyID" id="zikuyID" placeholder="ת.ז לזיכוי"/><br>
+				    	<input type="text" name="ammount" id="ammount" placeholder="כמות להעברה"/> <br>
+				    	
+			        </div>
+			        <div class="modal-footer">
+			          <input type="button" onclick="haavara()" value="העברה"/>
+			        </div>
+			      </div>
+			      
+			    </div>
+			  </div>
+		
+			
+		</div>
+		
+			<div class="col-sm-4" >
+				
+				<br><br>
+				<div  id="allPersons"></div>
+
+			
+			</div>
+		
+		
+		<div class="col-sm-2" >
+		
+			<b>פרטים אישיים:</b><br>
+		    <input type="text" name="fname" id="fname" placeholder="שם פרטי" /><br>
+			<input type="text" name="lname" id="lname" placeholder="שם משפחה"/> <br>
+			<input type="text" name="id" id="id" placeholder="ת.ז"/> <br><br>
+			
+			<b>פרטי מגורים:</b><br>
+			<input type="text" name="city" id="city" placeholder="עיר" /><br>
+			<input type="text" name="street" id="street" placeholder="רחוב"/> <br>
+			<input type="text" name="homeNumber" id="homeNumber" placeholder="מס בית"/>
+			
+			
+			<br><br>
+			<input type="button" value="הכנס" onclick="insertPerson()"/> 
+			<input type ="button" value="ספרת ביקורת" onclick="fixId(document.getElementById('id'))"/>
+			<input type="button" value="הצג" onclick="showPerson()"/>
+			
+			<br>
+			<input type="button" value="חפש" onclick="searchPerson()"/>
+			<input type="button" value="ערוך" onclick="editPerson()"/>
+			<input type="button" value="נקה" onclick="clearPerson()"/>
+			<input type="button" value="מחק" onclick="deletePerson()"/>
+			
+			
+		</div>
+		
+	
+	
+	
+	
+	</div>
+
+<script>
+String.prototype.isNumber = function(){return /^\d+$/.test(this);}
+
+	var personArr = [];
+	var accountArr = [];
+	var fname = document.getElementById("fname");
+	var lname = document.getElementById("lname");
+	var id = document.getElementById("id");
+	
+	var city = document.getElementById("city");
+	var street = document.getElementById("street");
+	var homeNumber = document.getElementById("homeNumber");
+	
+	var accountPersonID = document.getElementById("accountPersonID");
+	var accountBalance = document.getElementById("accountBalance");
+	
+	var chiuvID = document.getElementById("chiuvID");
+	var zikuyID = document.getElementById("zikuyID");
+	var ammount = document.getElementById("ammount");
+		   
+		   var newAddress = new address("ירושלים","בני ברית","56");
+		   var newPerson = new person("ידידאל","לוק","000000018",newAddress);
+		   personArr.push(newPerson);
+		   
+		   var newAccount = new account(500,newPerson);
+		   accountArr.push(newAccount);
+		   
+		   var newAddress = new address("ירושלים","בני ברית","77");
+		   var newPerson = new person("אבי","טל","000000026",newAddress);
+		   personArr.push(newPerson);
+		   
+		   var newAccount = new account(500,newPerson);
+		   accountArr.push(newAccount);
+
+		   
+
+
+
+function cal(str){
+	var arr = str.split("");
+	var text=0;
+	var text2="";
+	var i;
+	for (i = 0; i < 8; i++) {
+	var temp = "";
+	temp+= arr[i]*((i%2)+1);
+	    
+	    if(temp.length>1){
+	    text += splitAndConcat(temp);
+	    }else{
+	    text += temp*1
+	    }
+	}
+	text2 += text;
+	var final ="";
+	if(text2.length>1)
+	{
+		final = ((text2.split("")[0]*1)+1)*10-text;
+		final = final==10?0:final;
+	}else{
+		final = 10-text;
+		}
+		
+		if(isNaN(final)){
+			return str;
+		}else{
+			return str.substring(0,8)+final;
+		}
+
+}
+
+function splitAndConcat(str){
+	var temp = str.split("");
+	var num1 = temp[0]*1;
+	var num2 = temp[1]*1;
+	return num1+num2;
+}
+
+function account(_balance,_person) {
+    this.accountID = _person.id;
+    this.accountBalance = _balance;
+    this.accountPerson = _person;
+    
+    this.hafkada = function(itra){
+    	this.accountBalance+=itra;
+    }
+    
+    this.meshicha = function(itra){
+    	this.accountBalance-=itra;
+    	if(this.accountBalance<0){
+    		alert("שים לב אתה במינוס!!!");
+    	}
+    }
+}
+
+function address(_city,_street,_homeNumber) {
+    this.city = _city;
+    this.street = _street;
+    this.homeNumber = _homeNumber;
+}
+
+function person(_fname,_lname,_id,_address){
+    this.fname = _fname;
+    this.lname = _lname;
+    this.id = _id;
+    this.address = _address;
+    
+    this.getPersonName = function () {
+    	return this.fname.concat(" ",this.lname);
+    }
+
+    this.print = function () {
+      fname.value = this.fname;
+      lname.value = this.lname;
+      city.value =  this.address.city;
+	  street.value = this.address.street;
+	  homeNumber.value = this.address.homeNumber;
+
+    }
+    
+    this.edit = function () {
+    	if(fname.value!=""&&lname.value!=""&&city.value!=""&&street.value!=""&&homeNumber.value!=""){
+	       this.fname =  fname.value;
+	       this.lname = lname.value;
+	       this.address.city = city.value;
+		   this.address.street = street.value;
+		   this.address.homeNumber = homeNumber.value;
+
+    	}
+    }
+}
+
+function showCount(){
+	var text ="";
+	for(var i=0; i<accountArr.length;i++){
+		text+="<p><b>מספר חשבון:</b> "+accountArr[i].accountID +"<br> יתרה:  "+accountArr[i].accountBalance+" <br><b>שם בעל החשבון</b> "+accountArr[i].accountPerson.getPersonName();
+	}
+	if(text!=""){
+	document.getElementById("allAccounts").innerHTML = text;
+	}
+}
+
+function showPerson(){
+var text ="";
+	for(var i=0; i<personArr.length;i++){
+		text+="<p><b>שם:</b> "+personArr[i].fname+"  "+personArr[i].lname+" <br><b>ת.ז:</b> "+personArr[i].id +
+		"<br> <b>כתובת:</b> "+
+		personArr[i].address.city+"  "+personArr[i].address.street+"  "+personArr[i].address.homeNumber +"</p> ";
+	}
+	if(text!=""){
+	document.getElementById("allPersons").innerHTML = text;
+	}
+}
+
+function searchPerson(){
+		for(var i=0;i<personArr.length;i++)
+		{
+			if(personArr[i].id==id.value)
+			{
+			 personArr[i].print();
+				break;
+			}
+		}
+}
+
+
+
+function editPerson(){
+		for(var i=0;i<personArr.length;i++)
+		{
+			if(personArr[i].id==id.value)
+			{
+			 personArr[i].edit();
+				break;
+			}
+		}
+		showPerson();
+}
+
+function deletePerson(){
+		for(var i=0;i<personArr.length;i++)
+		{
+			if(personArr[i].id==id.value)
+			{
+				 personArr.splice(i,1);
+				 id.value="";
+				 break;
+			}
+		}
+		showPerson();
+	
+}
+
+function clearPerson(){
+
+	fname.value="";
+	lname.value="";
+	id.value="";
+	city.value="";
+	street.value="";
+	homeNumber.value="";
+}
+
+function insertPerson(){
+	
+	if(hasValue(fname.value,lname.value,id.value,city.value,street.value,homeNumber.value)&&validateId(id,false)){
+		
+		   var newAddress = new address(city.value,street.value,homeNumber.value);
+		   var newPerson = new person(fname.value,lname.value,id.value,newAddress);
+		   personArr.push(newPerson);
+		   clearPerson();
+   }
+}
+
+function validateId(id,isAccount)
+{
+	if(!id.value.isNumber())
+	{
+		alert("להזין בת.ז רק ספרות");
+		id.value = "";
+		return false;
+	}
+	if(id.value.length!=9)
+	{
+		alert("ת.ז צריכה להיות בעלת 9 ספרות");
+		return false;
+	}
+	if(cal(id.value)!=id.value)
+	{
+		alert("ת.ז אינה תקינה");
+		return false;
+	}
+	if(!isAccount){
+		for(var i=0;i<personArr.length;i++){
+		if(personArr[i].id==id.value)
+		{
+			alert("ת.ז זו קיימת כבר");
+			return false;
+			
+		}
+	}
+	}
+	return true;
+}
+
+function hasValue(){
+var flag = true;
+	for(var i=0;i<arguments.length;i++){
+		if(arguments[i]==""){
+			flag = false;
+			alert("נא למלא את כל השדות");
+			break;
+		}
+	}
+	return flag;
+}
+
+function fixId(value){	
+	value.value = cal(value.value);
+}
+
+function insertAccount(){
+	if(hasValue(accountPersonID.value)&&validateId(accountPersonID,true))
+	{
+		var flag = true;
+		for(var i=0;i<accountArr.length;i++)
+		{
+			if(accountArr[i].accountID==accountPersonID.value)
+			{
+				alert("קיים חשבון לאדם זה!");
+				flag = false;
+				break;
+			}
+		}
+		if(flag){
+			var flag = false;
+			for(var i=0;i<personArr.length;i++){
+				if(personArr[i].id==accountPersonID.value)
+				{
+					var newAccount = new account(0,personArr[i]);
+					accountArr.push(newAccount);
+					clearAccount();
+					flag = true;
+				}
+			}
+			if(!flag){
+				alert("לא קיימת ת.ז במאגר האוכלוסין");
+			}
+			
+			
+		}
+	}
+	
+	
+}
+function clearAccount(){
+	accountPersonID.value="";
+	accountBalance.value="";
+}
+
+function getAccountByID(ID)
+{
+		for(var i=0;i<accountArr.length;i++)
+		{
+			if(accountArr[i].accountID==ID)
+			{
+			 return accountArr[i]
+			}
+		}
+		
+		return null;
+}
+function hafkadaOrMeshiche(isHafkada){
+
+	if(isHafkada){
+		if(hafkada(accountBalance.value*1,accountPersonID.value)){
+			clearAccount();
+		}
+	}else{
+		if(meshicha(accountBalance.value*1,accountPersonID.value)){
+			clearAccount();
+		}
+	}
+	showCount();
+}
+
+function haavara(){
+	if(meshicha(ammount.value,chiuvID.value*1)){
+		if(hafkada(ammount.value,zikuyID.value*1)){
+			
+		}
+	}
+}
+
+function meshicha(itra,accountID){
+	var account = getAccountByID(accountID);
+	if(hasValue(accountID,itra)){
+		if(account!=null){
+			if(!isNaN(itra)&&itra>0){
+				account.meshicha(itra);
+				return true;
+			}
+		}else{
+			alert("לא קיים חשבון לת.ז הנתונה!");
+		}
+		
+		
+	}
+	return false;
+}
+
+function hafkada(itra,accountID){
+	var account = getAccountByID(accountID);
+	if(hasValue(accountID,itra)){
+		if(account!=null){
+			if(!isNaN(itra)&&itra>0){
+				account.hafkada(itra);
+				return true;
+			}
+		}else{
+			alert("לא קיים חשבון לת.ז הנתונה!");
+		}
+		
+		
+	}
+	return false;
+}
+</script>
+
+</body>
+</html>
