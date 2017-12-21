@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="form-style-1" id="cnt">
+ 
+  <input id="fname" name="fName" type="text" class="field-long" />
+  
+  <input id="lname" name="lName" type="text" class="field-long" />
+
+  <input id="id" name="id" type="text" class="field-long" />
+  
+  <button id="btn-inp" onclick="SAlert()">בדוק</button>
+  <button id="btn-inp" onclick="showPrsnArr()">הצג</button>
+  <button id="btn-inp" onclick="insertNewPerson()">הכנס</button>
+  <button id="btn-inp" onclick="fixIt()">תקן</button>
+
+  <p id="demo"></p>
+  <p id="demo1"></p>
+</div>
+ 
+  <script>
+    /*
+var sumOfProperty = 0;
+
+function person(_fname,_lname,_id,_address,_password,_mail,_balance){
+    this.fname = _fname;
+    this.lname = _lname;
+    this.id = _id;
+    this.address = _address;
+    this.password = _password;
+    this.mail = _mail;
+    this.balance = _balance;
+}
+var myObj = new person("jo", "dowli", 00000 , 11234, "email", 44334);
+
+
+// var student = { 
+// name : "David Rayy", 
+// sclass : "VI", 
+// rollno : 12 
+// };
+
+function print(obj) {
+  if(!isObject) return [];
+  if(Object.keys) return Object.keys(obj);
+}
+
+function isObject(obj) {
+  var type = typeof obj;
+  return type === "function" || type === "object" && !!obj;
+}
+
+console.log(print(myObj));
+
+if(myObj.hasOwnProperty('sclass'));
+  delete myObj.sclass;
+console.log(print(myObj));
+
+for (var prop in myObj)
+    sumOfProperty++;
+console.log(sumOfProperty);
+*/
+
+/*** EXERCISE 4 ***/
+
+// var library = [ 
+//    {
+//        author: 'Bill Gates',
+//        title: 'The Road Ahead',
+//        readingStatus: true
+//    },
+//    {
+//        author: 'Steve Jobs',
+//        title: 'Walter Isaacson',
+//        readingStatus: true
+//    },
+//    {
+//        author: 'Suzanne Collins',
+//        title:  'Mockingjay: The Final Book of The Hunger Games', 
+//        readingStatus: false
+//    }];
+
+//console.log(library);
+// var rdbok = Object.keys(library);
+// for (var prop in library)
+//   console.log(prop[0]);
+
+// for(var i = 0; i < library.length; i++)
+//   {
+//     var book = "'" + library[i].title + "'  by " + library[i].author + ".";
+//     if(library[i].readingStatus)
+//       console.log("already read " + book);
+//     else
+//       console.log("need to read " + book)
+//   }
+
+/*** EXERCISE 5 ***/
+  </script>
+</body>
+</html>
